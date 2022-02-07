@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 contract DappToken {
 
     string public name = "Steinnegen";
+    
     string public symbol = "STEIN";
 
     uint256 public totalSupply;
