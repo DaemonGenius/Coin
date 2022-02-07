@@ -12,7 +12,7 @@ contract('DappToken', async function (accounts) {
     let name = await dApp.name()
     assert.equal(
       name,
-      'Dapp Token',
+      'dApp Token',
       'Has the correct name',
     )
   })
