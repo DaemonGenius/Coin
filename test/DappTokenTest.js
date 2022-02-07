@@ -9,10 +9,20 @@ contract('DappToken', async function (accounts) {
 
   it('Initializes the contract with the correct values',  async () => {
 
+    let symbol = await dApp.symbol()
+    assert.equal(
+      symbol,
+      'STEIN',
+      'Has the correct symbol',
+    )
+  })
+
+  it('Initializes the contract with the correct values',  async () => {
+
     let name = await dApp.name()
     assert.equal(
       name,
-      'dApp Token',
+      'Steinnegen',
       'Has the correct name',
     )
   })
