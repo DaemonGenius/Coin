@@ -41,7 +41,7 @@ Write-Host $latest_tag
 $matches = Select-String -InputObject $latest_tag -pattern 'v(?<major>[0-9]+)\.(?<minor>[0-9]+).(?<patch>[0-9]+)'
 
 # set major.minor.patch to last tagged version if it exists - otherwise set to 0.0.0
-if ($matches.Matches -ne $null -and $matches.Matches.Groups.Count -gt 0) {    
+if ($null -ne $matches.Matches -and $matches.Matches.Groups.Count -gt 0) {    
     $git_major_version = $matches.Matches[0].Groups['major'].Value
     $git_minor_version = $matches.Matches[0].Groups['minor'].Value
     $git_patch_version = $matches.Matches[0].Groups['patch'].Value
