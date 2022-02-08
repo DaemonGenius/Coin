@@ -40,6 +40,9 @@ module.exports = {
       port: '7545',
       network_id: '*',
     },
+    contracts_directory: './contracts/',
+    contracts_build_directory: './build/contracts',
+  
     // Useful for testing. The `development` name is special - truffle uses it by default
     // if it's defined here and no other network is specified at the command line.
     // You should run a client (like ganache-cli, geth or parity) in a separate terminal

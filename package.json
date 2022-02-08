@@ -2,5 +2,12 @@
   "name": "coin-app",
   "version": "v0.1.0",
   "description": "DeFi Token Staking App",
-  "author": "Christian Steinmann"
+  "author": "Christian Steinmann",
+   "dependencies": {
+    "web3": "^1.7.0",
+    "@openzeppelin/contracts": "^4.3.1"
+  },
+  "scripts": {
+    "dev": "node server.js"
+  }
 }
