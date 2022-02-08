@@ -8,7 +8,6 @@ contract DappToken {
     string public symbol = "STEIN";
 
     uint256 public totalSupply;
-    uint256 public totalSupply;
 
     mapping(address => uint256) public balanceOf;
 
