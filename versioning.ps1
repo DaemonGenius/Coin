@@ -1,6 +1,6 @@
 #parse parameters supplied by TeamCity script step
 param (
-    [string]$branch = "refs/heads/master",
+    [string]$branch = "refs/heads/main",
     [string]$branch_is_default = "true",
     [string]$build_number = "0"
 )
