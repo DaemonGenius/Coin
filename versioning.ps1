@@ -35,6 +35,7 @@ $minor_version = $txt_version['minor'].Value
 # Parse current version number by looking for v1.2.3 tags applied to master branch in Git
 (git fetch --tags)
 $tags_list = (git tag --sort=v:refname)
+Write-Host $tags_list
 $latest_tag = $tags_list.Split([Environment]::NewLine) | Select-Object -Last 1
 Write-Host $latest_tag
 
