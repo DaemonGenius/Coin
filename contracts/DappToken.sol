@@ -15,4 +15,8 @@ contract DappToken {
         totalSupply = _initialSupply;
         balanceOf[msg.sender] = _initialSupply;
     }
+
+
+
+    //Creating Transfer form methods
 }
