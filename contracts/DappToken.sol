@@ -17,6 +17,11 @@ contract DappToken {
         balanceOf[msg.sender] = _initialSupply;
     }
 
+    constructor(uint256 _initialSupply) {
+        totalSupply = _initialSupply;
+        balanceOf[msg.sender] = _initialSupply;
+    }
+
     //Creating Transfer form methods
     function transfer(address _to, uint256 _value)
         public
