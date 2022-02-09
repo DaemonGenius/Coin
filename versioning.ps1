@@ -95,7 +95,7 @@ if ($is_pull_request) { $suffix = "-pr$branch" }
 
 $vcs_root_labeling_pattern = "v$major_version.$minor_version.$patch_version$git_postfix"
 $assembly_version = [string]::Join('.', @($major_version, $minor_version, $patch_version, $build_number))
-$package_version = $assembly_version + $suffix
+$package_version = $branch +": " + $vcs_root_labeling_pattern
 Write-Host "##teamcity[setParameter name='VcsRootLabelingPattern' value='$vcs_root_labeling_pattern']"
 Write-Host "##teamcity[setParameter name='PackageVersion' value='$package_version']"
 Write-Host "##teamcity[setParameter name='AssemblyVersion' value='$assembly_version']"
