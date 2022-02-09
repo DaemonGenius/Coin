@@ -61,7 +61,7 @@ if ($matches.Matches.Count -gt 0) {
 }
 
 Write-Host "version.txt: $major_version.$minor_version"
-Write-Host "Tag version: $git_major_version.$git_minor_version.$git_patch_version"
+Write-Host "Tag version: $git_major_version.$git_minor_version.$git_patch_version$git_rc"
 Write-Host "Pull request: $branch"
 Write-Host "Is pull request? $is_pull_request"
 
@@ -74,7 +74,6 @@ if ($git_major_version -eq $major_version -and $git_minor_version -eq $minor_ver
 } else {
     $patch_version = 0
 }
-
 $suffix = ''
 
 if ($is_pull_request) { $suffix = "-pr$branch" }
