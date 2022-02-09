@@ -56,6 +56,7 @@ Write-Host $latest_tag
 
 $matches = Select-String -InputObject $latest_tag -pattern 'v(?<major>[0-9]+)\.(?<minor>[0-9]+).(?<patch>[0-9]+)'
 
+"asd"
 
 # set major.minor.patch to last tagged version if it exists - otherwise set to 0.0.0
 if ($matches.Matches.Count -gt 0) {    
