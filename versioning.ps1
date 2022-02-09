@@ -74,6 +74,7 @@ if ($git_major_version -eq $major_version -and $git_minor_version -eq $minor_ver
 } else {
     $patch_version = 0
 }
+
 $suffix = ''
 
 if ($is_pull_request) { $suffix = "-pr$branch" }
