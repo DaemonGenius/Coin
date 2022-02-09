@@ -39,6 +39,7 @@ if ($branch -eq "refs/heads/Release/release-candidate") {
     Write-Host "master-merge"
 }
 
+Write-Host $git_postfix
 # Read major.minor version from version.txt in root of source repo
 $major_version = $txt_version['major'].Value
 $minor_version = $txt_version['minor'].Value
@@ -75,19 +76,13 @@ Write-Host "Tag version: $git_major_version.$git_minor_version.$git_patch_versio
 Write-Host "Pull request: $branch"
 Write-Host "Is pull request? $is_pull_request"
 
-Write-Host $git_minor_version
-Write-Host $minor_version
-
 if ($git_major_version -eq $major_version -and $git_minor_version -eq $minor_version) {
     $commit_count = (git rev-list "$latest_tag..HEAD" --count)
-    Write-Host "$commit_count commits to master since $latest_tag"
+    Write-Host "$commit_count commits to $branch since $latest_tag"
     $patch_version =  [int]$commit_count + [int]$git_patch_version;
     
-    Write-Host $patch_version
-    Write-Host "awe"
 } else {
     $patch_version = 0
-    Write-Host "fail"
 }
 $suffix = ''
 
