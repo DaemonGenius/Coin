@@ -27,8 +27,15 @@ function Update-AssemblyVersion {
 
 $is_pull_request = $branch_is_default -ne "true"
 
+if ($branch -eq "refs/heads/Release/release-candidate") {
+    $txt_version = (Get-Content version-rc.txt | Select-String -pattern '(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)').Matches[0].Groups
+    $git_postfix = "-RC1"
+}else{
+    $txt_version = (Get-Content version-master.txt | Select-String -pattern '(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)').Matches[0].Groups
+    $git_postfix = ""
+}
+
 # Read major.minor version from version.txt in root of source repo
-$txt_version = (Get-Content version.txt | Select-String -pattern '(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)').Matches[0].Groups
 $major_version = $txt_version['major'].Value
 $minor_version = $txt_version['minor'].Value
 
@@ -50,7 +57,7 @@ if ($matches.Matches.Count -gt 0) {
     $git_major_version = $matches.Matches[0].Groups['major'].Value
     $git_minor_version = $matches.Matches[0].Groups['minor'].Value
     $git_patch_version = $matches.Matches[0].Groups['patch'].Value
-    $git_rc = "-RC1"
+    
 
     Write-Host "Asd"
 } else {
@@ -61,7 +68,7 @@ if ($matches.Matches.Count -gt 0) {
 }
 
 Write-Host "version.txt: $major_version.$minor_version"
-Write-Host "Tag version: $git_major_version.$git_minor_version.$git_patch_version$git_rc"
+Write-Host "Tag version: $git_major_version.$git_minor_version.$git_patch_version$git_postfix"
 Write-Host "Pull request: $branch"
 Write-Host "Is pull request? $is_pull_request"
 
