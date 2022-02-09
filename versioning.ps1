@@ -34,24 +34,28 @@ $minor_version = $txt_version['minor'].Value
 
 # Parse current version number by looking for v1.2.3 tags applied to master branch in Git
 
-$tags_list = (git tag --sort=v:refname)
+$tags_list = [array](git tag --sort=v:refname)
+
 Write-Host $tags_list
-$latest_tag = (Select-String " " $tags_list | Select-Object -Last 1)
-# $latest_tag = $tags_list -split " " | Select-String -Last 1
-# $latest_tag = $tags_list.Split([Environment]::NewLine) | Select-Object -Last 1
+
+$latest_tag = $tags_list[$tags_list1.Count - 1]
+
 Write-Host $latest_tag
 
 $matches = Select-String -InputObject $latest_tag -pattern 'v(?<major>[0-9]+)\.(?<minor>[0-9]+).(?<patch>[0-9]+)'
 
+Write-Host $matches.Matches[0].Groups['minor'].Value
 # set major.minor.patch to last tagged version if it exists - otherwise set to 0.0.0
-if ($null -ne $matches.Matches -and $matches.Matches.Groups.Count -gt 0) {    
+if ($matches.Matches.Count -gt 0) {    
     $git_major_version = $matches.Matches[0].Groups['major'].Value
     $git_minor_version = $matches.Matches[0].Groups['minor'].Value
     $git_patch_version = $matches.Matches[0].Groups['patch'].Value
+    Write-Host "Asd"
 } else {
     $git_major_version = 0
     $git_minor_version = 0
     $git_patch_version = 0
+    Write-Host "Fail"
 }
 
 Write-Host "version.txt: $major_version.$minor_version"
