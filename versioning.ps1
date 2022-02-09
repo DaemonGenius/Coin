@@ -61,7 +61,7 @@ if ($matches.Matches.Count -gt 0) {
 }
 
 Write-Host "version.txt: $major_version.$minor_version"
-Write-Host "Tag version: $git_major_version.$git_minor_version.$git_patch_version.$git_rc"
+Write-Host "Tag version: $git_major_version.$git_minor_version.$git_patch_version$git_rc"
 Write-Host "Pull request: $branch"
 Write-Host "Is pull request? $is_pull_request"
 
