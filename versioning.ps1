@@ -71,7 +71,7 @@ Write-Host $minor_version
 if ($git_major_version -eq $major_version -and $git_minor_version -eq $minor_version) {
     $commit_count = (git rev-list "$latest_tag..HEAD" --count)
     Write-Host "$commit_count commits to master since $latest_tag"
-    $patch_version =  [int]$commit_count + [int]$git_patch_version + $git_rc;
+    $patch_version =  [int]$commit_count + [int]$git_patch_version;
     
     Write-Host $patch_version
     Write-Host "awe"
@@ -83,7 +83,7 @@ $suffix = ''
 
 if ($is_pull_request) { $suffix = "-pr$branch" }
 
-$vcs_root_labeling_pattern = "v$major_version.$minor_version.$patch_version"
+$vcs_root_labeling_pattern = "v$major_version.$minor_version.$patch_version$git_rc"
 $assembly_version = [string]::Join('.', @($major_version, $minor_version, $patch_version, $build_number))
 $package_version = $assembly_version + $suffix
 Write-Host "##teamcity[setParameter name='VcsRootLabelingPattern' value='$vcs_root_labeling_pattern']"
