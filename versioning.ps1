@@ -28,7 +28,7 @@ function Update-AssemblyVersion {
 $is_pull_request = $branch_is_default -ne "true"
 
 # Read major.minor version from version.txt in root of source repo
-$txt_version = (Get-Content version.txt | Select-String -pattern '(?<major>[0-9]+)\.(?<minor>[0-9]+)').Matches[0].Groups
+$txt_version = (Get-Content version.txt | Select-String -pattern '(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)\.(RC1)').Matches[0].Groups
 $major_version = $txt_version['major'].Value
 $minor_version = $txt_version['minor'].Value
 
