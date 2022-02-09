@@ -27,12 +27,16 @@ function Update-AssemblyVersion {
 
 $is_pull_request = $branch_is_default -ne "true"
 
+
+
 if ($branch -eq "refs/heads/Release/release-candidate") {
     $txt_version = (Get-Content version-rc.txt | Select-String -pattern '(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)').Matches[0].Groups
     $git_postfix = "-RC1"
+    Write-Host "rc-merge"
 }else{
     $txt_version = (Get-Content version-master.txt | Select-String -pattern '(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)').Matches[0].Groups
     $git_postfix = ""
+    Write-Host "master-merge"
 }
 
 # Read major.minor version from version.txt in root of source repo
@@ -58,7 +62,6 @@ if ($matches.Matches.Count -gt 0) {
     $git_minor_version = $matches.Matches[0].Groups['minor'].Value
     $git_patch_version = $matches.Matches[0].Groups['patch'].Value
     
-
     Write-Host "Asd"
 } else {
     $git_major_version = 0
@@ -90,7 +93,7 @@ $suffix = ''
 
 if ($is_pull_request) { $suffix = "-pr$branch" }
 
-$vcs_root_labeling_pattern = "v$major_version.$minor_version.$patch_version$git_rc"
+$vcs_root_labeling_pattern = "v$major_version.$minor_version.$patch_version$git_postfix"
 $assembly_version = [string]::Join('.', @($major_version, $minor_version, $patch_version, $build_number))
 $package_version = $assembly_version + $suffix
 Write-Host "##teamcity[setParameter name='VcsRootLabelingPattern' value='$vcs_root_labeling_pattern']"
