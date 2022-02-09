@@ -62,13 +62,11 @@ if ($matches.Matches.Count -gt 0) {
     $git_major_version = $matches.Matches[0].Groups['major'].Value
     $git_minor_version = $matches.Matches[0].Groups['minor'].Value
     $git_patch_version = $matches.Matches[0].Groups['patch'].Value
-    
-    Write-Host "Asd"
+
 } else {
     $git_major_version = 0
     $git_minor_version = 0
     $git_patch_version = 0
-    Write-Host "Fail"
 }
 
 Write-Host "version.txt: $major_version.$minor_version"
