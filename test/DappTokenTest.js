@@ -7,30 +7,18 @@ contract('DappToken', async function (accounts) {
     dApp = await DappToken.deployed()
   })
 
-  it('Initializes the contract with the correct values',  async () => {
-
+  it('Initializes the contract with the correct Symbol', async () => {
     let symbol = await dApp.symbol()
-    assert.equal(
-      symbol,
-      'STEIN',
-      'Has the correct symbol',
-    )
+    assert.equal(symbol, 'STEIN', 'Has the correct symbol')
   })
 
-  it('Initializes the contract with the correct values',  async () => {
-
+  it('Initializes the contract with the correct Name', async () => {
     let name = await dApp.name()
-    assert.equal(
-      name,
-      'Steinnegen',
-      'Has the correct name',
-    )
+    assert.equal(name, 'Steinnegen', 'Has the correct name')
   })
 
-  it('sets the total supply upon deployment',  async () => {
-
+  it('sets the total supply upon deployment', async () => {
     let totalSupply = await dApp.totalSupply()
-    console.log(totalSupply.toNumber())
     assert.equal(
       totalSupply.toNumber(),
       100000000,
@@ -39,13 +27,70 @@ contract('DappToken', async function (accounts) {
   })
 
   it('BalanceOf', async () => {
-
     let BalanceOf = await dApp.balanceOf(accounts[0])
-    console.log(BalanceOf.toNumber())
     assert.equal(
       BalanceOf.toNumber(),
       100000000,
       'allocates the initial supply to the admin account',
     )
+  })
+
+  it('Transfers Token Ownership', async () => {
+    let transferInstance = '';
+    let transferAmount = 250000
+
+    try {
+      await dApp.transfer.call(accounts[1], 9999999999999999999999999)
+    } catch (error) {
+      assert(
+        error.message.indexOf('overflow') >= 0,
+        'error message must contain revert',
+      )
+    }
+
+    assert.equal(await dApp.transfer.call(accounts[0], transferAmount), true, 'Transfer Successful');
+
+    let BalanceOfSenderPrior = await dApp.balanceOf(accounts[0])
+    console.log('Account 0: ' + BalanceOfSenderPrior.toNumber())
+
+    let BalanceOfAccountPrior = await dApp.balanceOf(accounts[1])
+    console.log('Account 1: ' + BalanceOfAccountPrior.toNumber())
+    let receipt = ''
+    try {
+      receipt = await dApp.transfer(accounts[1], transferAmount, {
+        from: accounts[0],
+      })
+    } catch (error) {
+      assert(error, 'Transfer failure')
+    }
+
+    let BalanceOf = await dApp.balanceOf(accounts[1])
+
+    assert.equal(
+      BalanceOf.toNumber(),
+      BalanceOfAccountPrior.toNumber() + transferAmount,
+      'adds the amount to the receiving account',
+    )
+    console.log('Account 1: ' + BalanceOf.toNumber())
+
+    BalanceOf = await dApp.balanceOf(accounts[0])
+
+    assert.equal(
+      BalanceOf.toNumber(),
+      BalanceOfSenderPrior.toNumber() - transferAmount,
+      'deducts the amount to the sending account',
+    )
+
+    console.log('Account 0: ' + BalanceOf.toNumber())
+
+    assert.equal(receipt.logs.length, 1, 'triggers one event')
+    assert.equal(
+      receipt.logs[0].args._value,
+      transferAmount,
+      'Logs transfer amount',
+    )
+
+    console.log('Receipt Logs: ' + JSON.stringify(receipt.logs[0]))
+    console.log('Receipt Logs Transfer Amount: ' + receipt.logs[0].args._value)
   })
 })

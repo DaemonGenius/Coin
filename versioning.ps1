@@ -33,10 +33,12 @@ $major_version = $txt_version['major'].Value
 $minor_version = $txt_version['minor'].Value
 
 # Parse current version number by looking for v1.2.3 tags applied to master branch in Git
-(git fetch --tags)
+
 $tags_list = (git tag --sort=v:refname)
 Write-Host $tags_list
-$latest_tag = $tags_list.Split([Environment]::NewLine) | Select-Object -Last 1
+$latest_tag = (Select-String " " $tags_list | Select-Object -Last 1)
+# $latest_tag = $tags_list -split " " | Select-String -Last 1
+# $latest_tag = $tags_list.Split([Environment]::NewLine) | Select-Object -Last 1
 Write-Host $latest_tag
 
 $matches = Select-String -InputObject $latest_tag -pattern 'v(?<major>[0-9]+)\.(?<minor>[0-9]+).(?<patch>[0-9]+)'
