@@ -77,7 +77,7 @@ Write-Host "Is pull request? $is_pull_request"
 if ($git_major_version -eq $major_version -and $git_minor_version -eq $minor_version) {
     $commit_count = (git rev-list "$latest_tag..HEAD" --count)
     Write-Host "$commit_count commits to $branch since $latest_tag"
-    $patch_version =  [int]$commit_count + [int]$git_patch_version;
+    $patch_version = [int]$git_patch_version + 1;
     
 } else {
     $patch_version = 0
