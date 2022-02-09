@@ -28,13 +28,13 @@ function Update-AssemblyVersion {
 $is_pull_request = $branch_is_default -ne "true"
 
 # Read major.minor version from version.txt in root of source repo
-$txt_version = (Get-Content version.txt | Select-String -pattern '(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)\.(RC1)').Matches[0].Groups
+$txt_version = (Get-Content version.txt | Select-String -pattern '(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)').Matches[0].Groups
 $major_version = $txt_version['major'].Value
 $minor_version = $txt_version['minor'].Value
 
 # Parse current version number by looking for v1.2.3 tags applied to master branch in Git
 
-$tags_list = [array](git tag --sort=v:refname)
+$tags_list = [array](git tag -l --sort=v:refname *RC1)
 
 Write-Host $tags_list
 
@@ -50,6 +50,8 @@ if ($matches.Matches.Count -gt 0) {
     $git_major_version = $matches.Matches[0].Groups['major'].Value
     $git_minor_version = $matches.Matches[0].Groups['minor'].Value
     $git_patch_version = $matches.Matches[0].Groups['patch'].Value
+    $git_rc = "-RC1"
+
     Write-Host "Asd"
 } else {
     $git_major_version = 0
@@ -66,7 +68,9 @@ Write-Host "Is pull request? $is_pull_request"
 if ($git_major_version -eq $major_version -and $git_minor_version -eq $minor_version) {
     $commit_count = (git rev-list "$latest_tag..HEAD" --count)
     Write-Host "$commit_count commits to master since $latest_tag"
-    $patch_version =  [int]$commit_count + [int]$git_patch_version;
+    $patch_version =  [int]$commit_count + [int]$git_patch_version + $git_rc;
+    
+    Write-Host $patch_version
 } else {
     $patch_version = 0
 }
