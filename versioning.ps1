@@ -44,7 +44,7 @@ Write-Host $latest_tag
 
 $matches = Select-String -InputObject $latest_tag -pattern 'v(?<major>[0-9]+)\.(?<minor>[0-9]+).(?<patch>[0-9]+)'
 
-Write-Host $matches.Matches[0].Groups['minor'].Value
+
 # set major.minor.patch to last tagged version if it exists - otherwise set to 0.0.0
 if ($matches.Matches.Count -gt 0) {    
     $git_major_version = $matches.Matches[0].Groups['major'].Value
@@ -65,14 +65,19 @@ Write-Host "Tag version: $git_major_version.$git_minor_version.$git_patch_versio
 Write-Host "Pull request: $branch"
 Write-Host "Is pull request? $is_pull_request"
 
+Write-Host $git_minor_version
+Write-Host $minor_version
+
 if ($git_major_version -eq $major_version -and $git_minor_version -eq $minor_version) {
     $commit_count = (git rev-list "$latest_tag..HEAD" --count)
     Write-Host "$commit_count commits to master since $latest_tag"
     $patch_version =  [int]$commit_count + [int]$git_patch_version + $git_rc;
     
     Write-Host $patch_version
+    Write-Host "awe"
 } else {
     $patch_version = 0
+    Write-Host "fail"
 }
 $suffix = ''
 
