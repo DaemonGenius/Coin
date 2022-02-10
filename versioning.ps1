@@ -88,7 +88,7 @@ if ($git_major_version -eq $major_version -and $git_minor_version -eq $minor_ver
 }
 $suffix = ''
 
-if ($is_pull_request) { $suffix = "-pr$branch" }
+if ($is_pull_request) { $suffix = "-pr-$branch" }
 
 $vcs_root_labeling_pattern = "v$major_version.$minor_version.$patch_version$git_postfix"
 $assembly_version = [string]::Join('.', @($major_version, $minor_version, $patch_version, $build_number))
