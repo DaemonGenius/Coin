@@ -33,9 +33,12 @@ if ($branch -eq "refs/heads/Release/release-candidate") {
     $txt_version = (Get-Content version-rc.txt | Select-String -pattern '(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)').Matches[0].Groups
     $git_postfix = "-RC1"
     Write-Host "rc-merge"
+    $pattern = "v(0|[1-9]\d*)\.(0|[1-9]\d*)\.?(0|[1-9]\d*)(-(\d*[R])(\d*[C])(\d*[1]))"
+
 }else{
     $txt_version = (Get-Content version-master.txt | Select-String -pattern '(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)').Matches[0].Groups
     $git_postfix = ""
+    $pattern = "v(0|[1-9]\d*)\.(0|[1-9]\d*)\.?(0|[1-9]\d*)"
     Write-Host "master-merge"
 }
 
@@ -46,17 +49,17 @@ $minor_version = $txt_version['minor'].Value
 
 # Parse current version number by looking for v1.2.3 tags applied to master branch in Git
 
-$tags_list = [array](git tag -l --sort=v:refname *RC1)
+$tags_list = [array](git tag -l --sort=v:refname 'v*')
 
 Write-Host $tags_list
 
-$latest_tag = $tags_list[$tags_list1.Count - 1]
+$tags_matched = [regex]::matches($tags_list, $pattern)
+
+$latest_tag = $tags_matched[$tags_matched.Count - 1]
 
 Write-Host $latest_tag
 
 $matches = Select-String -InputObject $latest_tag -pattern 'v(?<major>[0-9]+)\.(?<minor>[0-9]+).(?<patch>[0-9]+)'
-
-"asd"
 
 # set major.minor.patch to last tagged version if it exists - otherwise set to 0.0.0
 if ($matches.Matches.Count -gt 0) {    
