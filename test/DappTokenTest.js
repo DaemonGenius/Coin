@@ -36,7 +36,7 @@ contract('DappToken', async function (accounts) {
   })
 
   it('Transfers Token Ownership', async () => {
-    let transferInstance = '';
+    let transferInstance = ''
     let transferAmount = 250000
 
     try {
@@ -48,7 +48,11 @@ contract('DappToken', async function (accounts) {
       )
     }
 
-    assert.equal(await dApp.transfer.call(accounts[0], transferAmount), true, 'Transfer Successful');
+    assert.equal(
+      await dApp.transfer.call(accounts[0], transferAmount),
+      true,
+      'Transfer Successful',
+    )
 
     let BalanceOfSenderPrior = await dApp.balanceOf(accounts[0])
     console.log('Account 0: ' + BalanceOfSenderPrior.toNumber())
@@ -92,5 +96,23 @@ contract('DappToken', async function (accounts) {
 
     console.log('Receipt Logs: ' + JSON.stringify(receipt.logs[0]))
     console.log('Receipt Logs Transfer Amount: ' + receipt.logs[0].args._value)
+  })
+
+  it('approves tokens for delegated transfer', async () => {
+    let approve = await dApp.approve.call(accounts[1], 100)
+    assert.equal(approve, true, 'Success')
+
+
+    let receipt = await dApp.approve(accounts[1], 100);
+    assert.equal(receipt.logs.length, 1, 'triggers one event')
+    assert.equal(receipt.logs[0].event, 'Approval', 'Should be the "Approval" event');
+
+    console.log(receipt);
+
+
+    let allowance = await dApp.allowance(accounts[0], accounts[1])
+
+    assert.equal(allowance, 100, 'stores the allowance for the delegated transfer');
+
   })
 })
