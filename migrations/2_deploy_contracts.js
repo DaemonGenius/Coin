@@ -6,4 +6,7 @@ module.exports = async (deployer) => {
 
   await deployer.deploy(DappToken, 100000000);
   await deployer.deploy(DappTokenSale, DappToken.address, tokenPrice);
-};
+}; 
+
+
+
